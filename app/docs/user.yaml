@@ -1,0 +1,211 @@
+paths:
+  /api/v1/register:
+    post:
+      summary: Register a new user
+      tags: [Authentication]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: "john_doe"
+                password:
+                  type: string
+                  example: "password123"
+      responses:
+        201:
+          description: User successfully registered
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 201
+                  data:
+                    type: object
+                    properties:
+                      userId:
+                        type: string
+                        example: "abc123"
+        400:
+          description: Bad request (validation errors)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 400
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: "Bad request (validation errors)"
+              examples:
+                missing_fields:
+                  value:
+                    status: 400
+                    data:
+                      message: "Username and password are required"
+                username_exists:
+                  value:
+                    status: 400
+                    data:
+                      message: "Username already exists"
+                weak_password:
+                  value:
+                    status: 400
+                    data:
+                      message: "Password must be at least 8 characters long and contain at least one letter and one number"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 500
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: "Internal server error"
+
+  /api/v1/login:
+    post:
+      summary: Login user and get tokens
+      tags: [Authentication]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: "john_doe"
+                password:
+                  type: string
+                  example: "password123"
+      responses:
+        200:
+          description: Successfully authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: "Login successful"
+        400:
+          description: Missing credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 400
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: "Missing username or password"
+        401:
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 401
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: "Invalid username or password"
+              examples:
+                invalid_user:
+                  value:
+                    status: 401
+                    data:
+                      message: "Invalid username or password"
+                invalid_password:
+                  value:
+                    status: 401
+                    data:
+                      message: "Invalid password"
+
+  /api/v1/refresh-token:
+    post:
+      summary: Refresh access token
+      tags: [Authentication]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refreshToken:
+                  type: string
+                  description: The refresh token issued during login
+              required:
+                - refreshToken
+            example:
+              refreshToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+      responses:
+        200:
+          description: New access token generated
+        401:
+          description: Invalid or expired refresh token
+
+  /api/v1/logout:
+    post:
+      summary: Logout user and invalidate refresh token
+      tags: [Authentication]
+      responses:
+        200:
+          description: Successfully logged out
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: "Logout successful"
+
+tags:
+  - name: Authentication
+    description: User authentication operations

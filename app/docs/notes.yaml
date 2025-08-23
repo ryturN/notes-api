@@ -1,0 +1,178 @@
+# /v1/notes
+
+paths:
+  /api/v1/notes/get:
+    get:
+      summary: Get all notes
+      tags: [Notes]
+      responses:
+        200:
+          description: A list of notes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: "note-uuid"
+                    title:
+                      type: string
+                      example: "Sample Note"
+                    content:
+                      type: string
+                      example: "This is a sample note."
+                    created_at:
+                      type: string
+                      format: date-time
+                      example: "2024-01-01T00:00:00Z"
+                    updated_at:
+                      type: string
+                      format: date-time
+                      example: "2024-01-01T00:00:00Z"
+
+  /api/v1/notes/create:
+    post:
+      summary: Create a new note
+      tags: [Notes]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: "New Note"
+                content:
+                  type: string
+                  example: "This is the content of the new note."
+                due:
+                  type: string
+                  format: date-time
+                  example: "2024-01-01T00:00:00Z"
+      responses:
+        201:
+          description: Note created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "note-uuid"
+                  title:
+                    type: string
+                    example: "New Note"
+                  content:
+                    type: string
+                    example: "This is the content of the new note."
+                  due:
+                    type: string
+                    format: date-time
+                    example: "2024-01-01T00:00:00Z"
+
+  /api/v1/notes/get/{id}:
+    get:
+      summary: Get a specific note
+      tags: [Notes]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the note to retrieve
+          schema:
+            type: string
+            example: "note-uuid"
+      responses:
+        200:
+          description: A single note
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "note-uuid"
+                  title:
+                    type: string
+                    example: "Sample Note"
+                  content:
+                    type: string
+                    example: "This is a sample note."
+                  due:
+                    type: string
+                    format: date-time
+                    example: "2024-01-01T00:00:00Z"
+
+  /api/v1/notes/update/{id}:
+    put:
+      summary: Update a specific note
+      tags: [Notes]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the note to update
+          schema:
+            type: string
+            example: "note-uuid"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: "Updated Note"
+                content:
+                  type: string
+                  example: "This is the updated content of the note."
+                due:
+                  type: string
+                  format: date-time
+                  example: "2024-01-02T00:00:00Z"
+      responses:
+        200:
+          description: Note updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "note-uuid"
+                  title:
+                    type: string
+                    example: "Updated Note"
+                  content:
+                    type: string
+                    example: "This is the updated content of the note."
+                  due:
+                    type: string
+                    format: date-time
+                    example: "2024-01-02T00:00:00Z"
+
+  /api/v1/notes/delete/{id}:
+    delete:
+      summary: Delete a specific note
+      tags: [Notes]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the note to delete
+          schema:
+            type: string
+            example: "note-uuid"
+      responses:
+        204:
+          description: Note deleted successfully
