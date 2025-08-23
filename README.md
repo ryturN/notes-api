@@ -20,7 +20,7 @@ Sebelum menjalankan project ini, pastikan memiliki:
 
 1. **Clone repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/ryturN/notes-api.git
    cd notes-api
    ```
 
@@ -113,7 +113,8 @@ untuk tokennya otomatis set ke cookies
 - `POST /api/user/register` - Daftar New user
 - `POST /api/user/login` - Login user
 - `POST /api/user/refresh-token` - Refresh JWT token
-Untuk Auth jika user login telah login /  > 15 menit / Token Expired maka perlu refresh token nya lagi ke refresh-token untuk request body nya skrng optional karna semua manajemen tokennya dihandle dari back / cookies
+
+### Untuk Auth. jika user telah login Lebih Dari 15 menit / Token Expired ,maka perlu refresh token nya lagi ke endpoint refresh-token. untuk request body nya skrng, masih optional karna semua manajemen tokennya dihandle dari back / cookies
 
 ### Notes (Need Login)
 - `GET /api/notes` - Get All Notes untuk user yang login
