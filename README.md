@@ -1,23 +1,22 @@
-## 🚀 Fitu## 📋 Yang Dibutuhkan
+## 📋 Requirement
 
-### Untuk Testing dengan Docker (Mudah)
+### Untuk Testing dengan Docker
 - **Docker** dan **Docker Compose**
 - **Git** (untuk clone repository)
 
 ### Untuk Development
-- **Node.js** (v18 atau lebih tinggi) atau **Bun** runtime
+- **Bun** runtime
 - **MySQL** database server
 - **Git** (untuk clone repository)
 
-## ⚡ Quick Start (Untuk Testing)
-
-**Cara tercepat untuk testing - cukup Docker saja!**
+## ⚡ Quick Start
 
 ```bash
 # 1. Clone repository
 git clone https://github.com/ryturN/notes-api.git
 cd notes-api
 
+docker build -t notes-api .
 # 2. Jalankan dengan Docker Compose
 docker-compose up -d
 
@@ -26,27 +25,6 @@ docker-compose up -d
 # - Swagger Docs: http://localhost:3000/api/docs
 ```
 
-## 🛠️ Instalasi (Development)
-
-1. **Clone repository**
-   ```bash
-   git clone https://github.com/ryturN/notes-api.git
-   cd notes-api
-   ```n User**: Daftar, login
-- **Manajemen Catatan**: CREATE, READ, UPDATE, dan DATE catatan
-- **Autentikasi**: Autentikasi berbasis JWT dengan refresh token
-- **Database**: Database MySQL dengan Sequelize ORM
-- **Dokumentasi**: Dokumentasi API menggunakan Swagger
-- **Logging**: Winston logger untuk monitoring aplikasi
-- **CORS**: Cross-origin resource sharing diaktifkan
-
-## 📋 Yang Dibutuhkan
-
-Sebelum menjalankan project ini, pastikan memiliki:
-
-- **Bun** runtime
-- **MySQL** database server
-- **Git** (untuk clone repository)
 
 ## 🛠️ Instalasi
 Notes : Jika ingin langsung running menggunakan docker bisa skip step instalasi
@@ -90,7 +68,7 @@ Notes : Jika ingin langsung running menggunakan docker bisa skip step instalasi
 
 ### Opsi 1: Menggunakan Docker
 
-**Tidak perlu install Bun, cukup Docker saja**
+**Tidak perlu install Bun**
 
 1. **Build Docker image**
    ```bash
@@ -118,7 +96,7 @@ Notes : Jika ingin langsung running menggunakan docker bisa skip step instalasi
      notes-api
    ```
 
-### Opsi 2: Mode Development (Perlu Install Bun)
+### Opsi 2: Manual running (Perlu Install Bun)
 
 ```bash
 bun run server.ts
@@ -202,7 +180,7 @@ secara otomatis menginisialisasi database dan membuat tabel saat startup. Model 
 
 ## 🆘 Troubleshooting
 
-### Masalah Umum
+### General Problem
 
 1. **Error Koneksi Database**
    - Pastikan MySQL server berjalan
