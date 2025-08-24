@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-notes
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: notes_db
+      MYSQL_USER: notes_user
+      MYSQL_PASSWORD: notes_password
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - notes-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  notes-api:
+    build: .
+    container_name: notes-api
+    environment:
+      MYSQL_DB_NAME: notes_db
+      MYSQL_DB_USER: notes_user
+      MYSQL_DB_PASSWORD: notes_password
+      MYSQL_DB_HOST: mysql
+      MYSQL_DB_PORT: 3306
+      JWT_SECRET: SADf32jiop12!@kdi0as12#!sa!Pmk123mk4mnikSAD32e$$@!SADN!@msazs@!mcfaxJW!MMK$$L11
+      JWT_REFRESH_SECRET: Skfeqw90k1asLL!P$)L!@SLlm123213o0123lksdaklm32mk123mk4mnikSAD32e!@MDSAM3!@@@MASMSANE
+      PORT: 3000
+      NODE_ENV: production
+    ports:
+      - "3000:3000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - notes-network
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+
+networks:
+  notes-network:
+    driver: bridge

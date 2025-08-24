@@ -1,6 +1,38 @@
-## 🚀 Fitur
+## 🚀 Fitu## 📋 Yang Dibutuhkan
 
-- **Manajemen User**: Daftar, login
+### Untuk Testing dengan Docker (Mudah)
+- **Docker** dan **Docker Compose**
+- **Git** (untuk clone repository)
+
+### Untuk Development
+- **Node.js** (v18 atau lebih tinggi) atau **Bun** runtime
+- **MySQL** database server
+- **Git** (untuk clone repository)
+
+## ⚡ Quick Start (Untuk Testing)
+
+**Cara tercepat untuk testing - cukup Docker saja!**
+
+```bash
+# 1. Clone repository
+git clone https://github.com/ryturN/notes-api.git
+cd notes-api
+
+# 2. Jalankan dengan Docker Compose
+docker-compose up -d
+
+# 3. Tunggu beberapa saat, lalu akses:
+# - API: http://localhost:3000
+# - Swagger Docs: http://localhost:3000/api/docs
+```
+
+## 🛠️ Instalasi (Development)
+
+1. **Clone repository**
+   ```bash
+   git clone https://github.com/ryturN/notes-api.git
+   cd notes-api
+   ```n User**: Daftar, login
 - **Manajemen Catatan**: CREATE, READ, UPDATE, dan DATE catatan
 - **Autentikasi**: Autentikasi berbasis JWT dengan refresh token
 - **Database**: Database MySQL dengan Sequelize ORM
@@ -12,12 +44,12 @@
 
 Sebelum menjalankan project ini, pastikan memiliki:
 
-- **Node.js** (v18 atau lebih tinggi) atau **Bun** runtime
+- **Bun** runtime
 - **MySQL** database server
 - **Git** (untuk clone repository)
 
 ## 🛠️ Instalasi
-
+Notes : Jika ingin langsung running menggunakan docker bisa skip step instalasi
 1. **Clone repository**
    ```bash
    git clone https://github.com/ryturN/notes-api.git
@@ -25,6 +57,7 @@ Sebelum menjalankan project ini, pastikan memiliki:
    ```
 
 2. **Install dependencies**
+   jika belum mempunyai bun bisa install dulu ke `https://bun.com/docs/installation`
    ```bash
    # Menggunakan Bun (direkomendasikan)
    bun install
@@ -53,15 +86,45 @@ Sebelum menjalankan project ini, pastikan memiliki:
    CREATE DATABASE notes_db;
    ```
 
-## 🚀 Menjalankan Aplikasi
+## 🚀 Running App
 
-### Mode Development
+### Opsi 1: Menggunakan Docker
+
+**Tidak perlu install Bun, cukup Docker saja**
+
+1. **Build Docker image**
+   ```bash
+   docker build -t notes-api .
+   ```
+
+2. **Jalankan dengan Docker Compose**
+   ```bash
+   docker-compose up -d
+   ```
+
+3. **Atau jalankan manual**
+   ```bash
+   # Jalankan MySQL container
+   docker run -d --name mysql-notes \
+     -e MYSQL_ROOT_PASSWORD=root \
+     -e MYSQL_DATABASE=notes_db \
+     -p 3306:3306 mysql:8.0
+
+   # Jalankan app
+   docker run -d --name notes-api \
+     --link mysql-notes:mysql \
+     -p 3000:3000 \
+     --env-file .env \
+     notes-api
+   ```
+
+### Opsi 2: Mode Development (Perlu Install Bun)
 
 ```bash
 bun run server.ts
 ```
 
-Server akan berjarunning di `http://localhost:3000` (atau port yang ditentukan di file `.env`).
+Server akan running di `http://localhost:3000` (atau port yang ditentukan di file `.env`).
 
 ## 📚 Dokumentasi API
 
@@ -135,7 +198,7 @@ bun run server.ts
 
 ### Operasi Database
 
-Aplikasi secara otomatis menginisialisasi database dan membuat tabel saat startup. Model database didefinisikan menggunakan Sequelize ORM.
+secara otomatis menginisialisasi database dan membuat tabel saat startup. Model database didefinisikan menggunakan Sequelize ORM.
 
 ## 🆘 Troubleshooting
 
@@ -154,5 +217,61 @@ Aplikasi secara otomatis menginisialisasi database dan membuat tabel saat startu
    - Pastikan JWT secrets sudah diset di `.env`
    - Periksa ekspirasi token
    - Verifikasi format token di Authorization header
+
+### Troubleshooting Docker
+
+1. **Docker Build Gagal**
+   ```bash
+   # Bersihkan cache dan rebuild
+   docker system prune -f
+   docker build --no-cache -t notes-api .
+   ```
+
+2. **Container MySQL Tidak Ready**
+   ```bash
+   # Check status MySQL
+   docker logs mysql-notes
+   
+   # Tunggu sampai MySQL ready
+   docker-compose logs -f mysql
+   ```
+
+3. **Port Conflict**
+   ```bash
+   # Stop semua container
+   docker-compose down
+   
+   # Ubah port di docker-compose.yml jika perlu
+   # Lalu jalankan lagi
+   docker-compose up -d
+   ```
+
+4. **Reset Semua Container & Data**
+   ```bash
+   docker-compose down -v
+   docker-compose up -d
+   ```
+
+### Quick Commands Docker
+
+```bash
+# Lihat status containers
+docker-compose ps
+
+# Lihat logs aplikasi
+docker-compose logs notes-api
+
+# Lihat logs MySQL
+docker-compose logs mysql
+
+# Restart aplikasi saja
+docker-compose restart notes-api
+
+# Stop semua
+docker-compose down
+
+# Start ulang dengan rebuild
+docker-compose up -d --build
+```
 
 **Dibuat dengan ❤️ menggunakan Bun, Express.js, dan TypeScript**
